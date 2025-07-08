@@ -25,10 +25,10 @@ const Receipt = ({ formData }: { formData: any }) => {
 	});
 
 	return (
-		<div className="flex flex-col w-[20vw] h-[65vh] justify-center relative px-[2vw] py-[3vh]">
+		<div className="flex flex-col w-[95vw] md:w-[20vw] h-[65vh] justify-center relative px-[2vw] py-[3vh] my-[5vh] md:my-0">
 			<img
 				src="/receipt-bg.png"
-				className="w-[20vw] h-[65vh] object-cover rounded-[0.5rem] absolute top-0 left-0 z-[-1]"
+				className="w-[95vw] md:w-[20vw] h-[65vh] object-cover rounded-[0.5rem] absolute top-0 left-0 z-[-1]"
 				alt="receipt background"
 			/>
 			<h2 className="text-center font-bold text-[3vh]">MoodMemoir</h2>

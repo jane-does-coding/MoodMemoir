@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import Receipt from "@/components/Receipt";
+import { useRef } from "react";
+import { toPng } from "html-to-image";
 
 export default function Home() {
 	const [formData, setFormData] = useState({
@@ -13,6 +15,19 @@ export default function Home() {
 		tired: 1,
 		note: "",
 	});
+
+	const receiptRef = useRef<HTMLDivElement>(null);
+
+	async function handleDownload() {
+		if (receiptRef.current === null) return;
+
+		const dataUrl = await toPng(receiptRef.current);
+
+		const link = document.createElement("a");
+		link.download = "mood-receipt.png";
+		link.href = dataUrl;
+		link.click();
+	}
 
 	function handleChange(
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -30,11 +45,11 @@ export default function Home() {
 
 	return (
 		<div className="h-[100vh] w-[100vw] flex pt-[10vh] justify-center">
-			<main className="w-[60vw] h-fit mx-auto flex flex-col">
+			<main className="w-[80vw] md:w-[60vw] h-fit mx-auto flex flex-col">
 				<h1 className="text-center text-[5vh] mb-[4vh]">Mood Memoir</h1>
 				<div className="flex flex-col md:flex-row justify-center items-center">
 					{/* Form */}
-					<div className="w-1/2">
+					<div className="w-full md:w-1/2">
 						<p className="mt-[1vh] mb-[0.5vh]">Full Name</p>
 						<input
 							type="text"
@@ -80,7 +95,7 @@ export default function Home() {
 								Submit
 							</button>
 							<button
-								onClick={() => alert("Download coming soon 😎")}
+								onClick={() => handleDownload()}
 								className="w-full py-[0.75vh] bg-neutral-200 rounded-[0.5rem]"
 							>
 								Download
@@ -88,8 +103,10 @@ export default function Home() {
 						</div>
 					</div>
 					{/* Receipt */}
-					<div className="w-1/2 flex items-center justify-center">
-						<Receipt formData={formData} />
+					<div className="w-full md:w-1/2 flex items-center justify-center">
+						<div className="" ref={receiptRef}>
+							<Receipt formData={formData} />
+						</div>
 					</div>
 				</div>
 			</main>
