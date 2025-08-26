@@ -3,6 +3,7 @@ import { useState } from "react";
 import Receipt from "@/components/Receipt";
 import { useRef } from "react";
 import { toPng } from "html-to-image";
+import Link from "next/link";
 
 export default function Home() {
 	const [formData, setFormData] = useState({
@@ -40,15 +41,20 @@ export default function Home() {
 	}
 
 	function handleSubmit() {
-		console.log("Mood Entry:", formData);
+		const existing = JSON.parse(localStorage.getItem("receipts") || "[]");
+		const updated = [...existing, { ...formData, id: Date.now() }];
+		localStorage.setItem("receipts", JSON.stringify(updated));
+		console.log("Saved Receipt:", formData);
 	}
 
 	return (
 		<div className="h-[100vh] w-[100vw] flex pt-[10vh] justify-center">
+			<Link href={"/"} className="absolute top-[2vh] left-[4vw]">
+				Saved
+			</Link>
 			<main className="w-[80vw] md:w-[60vw] h-fit mx-auto flex flex-col">
 				<h1 className="text-center text-[5vh] mb-[4vh]">Mood Memoir</h1>
 				<div className="flex flex-col md:flex-row justify-center items-center">
-					{/* Form */}
 					<div className="w-full md:w-1/2">
 						<p className="mt-[1vh] mb-[0.5vh]">Full Name</p>
 						<input
@@ -102,7 +108,6 @@ export default function Home() {
 							</button>
 						</div>
 					</div>
-					{/* Receipt */}
 					<div className="w-full md:w-1/2 flex items-center justify-center">
 						<div className="" ref={receiptRef}>
 							<Receipt formData={formData} />
