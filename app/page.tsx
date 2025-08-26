@@ -34,10 +34,25 @@ export default function Home() {
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
 	) {
 		const { name, value } = e.target;
-		setFormData((prev) => ({
-			...prev,
-			[name]: name === "fullName" || name === "note" ? value : parseInt(value),
-		}));
+
+		if (
+			["happy", "sad", "angry", "anxious", "excited", "tired"].includes(name)
+		) {
+			let num = parseInt(value);
+			if (isNaN(num)) num = 0;
+			if (num < 0) num = 0;
+			if (num > 10) num = 10;
+
+			setFormData((prev) => ({
+				...prev,
+				[name]: num,
+			}));
+		} else {
+			setFormData((prev) => ({
+				...prev,
+				[name]: value,
+			}));
+		}
 	}
 
 	function handleSubmit() {
@@ -49,7 +64,7 @@ export default function Home() {
 
 	return (
 		<div className="h-[100vh] w-[100vw] flex pt-[10vh] justify-center">
-			<Link href={"/"} className="absolute top-[2vh] left-[4vw]">
+			<Link href={"/reciepts"} className="absolute top-[2vh] left-[4vw]">
 				Saved
 			</Link>
 			<main className="w-[80vw] md:w-[60vw] h-fit mx-auto flex flex-col">
